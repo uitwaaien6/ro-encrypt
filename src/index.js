@@ -1,3 +1,5 @@
+'use strict';
+
 function createRepresentationEncryptionObject(complexity) {
 
     const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890?!'.split('');
@@ -26,38 +28,43 @@ function createRepresentationEncryptionObject(complexity) {
                     encryption = encryption + encryptionLetters[randomEncryptionLetter];
                 }
 
-                representationEncryptionObject[letter][section] = representationEncryptionObject[letter][section].concat(encryption);
-                encryption = '';
-
+                // in here we are iterating through all the sections index in all the properties of the object to avoid the same encryption in the object
                 if (representationEncryptionObject[letter] && representationEncryptionObject[letter][section]) {
                     const representationEncryptionObjectProperties = Object.getOwnPropertyNames(representationEncryptionObject);
 
                     for (let m = 0; m < representationEncryptionObjectProperties.length; m++) {
 
                         for (let n = 0; n < sections.length; n++) {
-                            if (representationEncryptionObject[representationEncryptionObjectProperties[m]][sections[n]]) {
-                                console.log(representationEncryptionObject[representationEncryptionObjectProperties[m]][sections[n]]);
+
+                            for (let sectionsIndex = 0; sectionsIndex < 3; sectionsIndex++) {
+
+                                if (representationEncryptionObject[letters[m]][sections[n]]) {
+                                    while (encryption === representationEncryptionObject[letters[m]][sections[n]][sectionsIndex]) {
+                                        encryption = '';
+                                        for (let l = 0; l < complexity; l++) {
+                                            const randomEncryptionLetter = Math.floor(Math.random() * encryptionLetters.length);
+                                            encryption = encryption + encryptionLetters[randomEncryptionLetter];
+                                        }
+                                    }
+                                }
                             }
-
                         }
-
                     }
                 }
 
-
-                // check if any encryption is the same in any of the properties of the representationEncryption;
-
-
+                representationEncryptionObject[letter][section] = representationEncryptionObject[letter][section].concat(encryption);
+                encryption = '';
             }
         }
     }
-    console.log(representationEncryptionObject)
+
+    console.log(representationEncryptionObject);
     return representationEncryptionObject;
 }
 
 function encryptPassword(encryptionObject, password) {
 
-    const sections = Object.getOwnPropertyNames(encryptionObject.a); // apple, lemon, or banana section
+    const sections = Object.getOwnPropertyNames(encryptionObject.a); // apple, lemon, or banana section, for now it doesnt matter which property we take from the representationalEncryptionObject because they all have the same sections;
 
     const randomSectionIndex = Math.floor(Math.random() * sections.length);
 
@@ -74,28 +81,24 @@ function encryptPassword(encryptionObject, password) {
 
         if (!isNaN(parseInt(passwordLetter))) {
             encryptedPassword = encryptedPassword.concat(passwordLetter);
-        }
-        
-
-        if (encryptionObject[passwordLetter]) {
-            encryptionObject[passwordLetter];
-            const choosenSectionLength = encryptionObject[passwordLetter][choosenSection].length;
-            const randomEncryptionSectionIndex = Math.floor(Math.random() * choosenSectionLength);
-            encryptedPassword = encryptedPassword.concat(encryptionObject[passwordLetter][choosenSection][randomEncryptionSectionIndex]);
+        } else {
+            if (encryptionObject[passwordLetter]) {
+                const choosenSectionLength = encryptionObject[passwordLetter][choosenSection].length;
+                const randomEncryptionSectionIndex = Math.floor(Math.random() * choosenSectionLength);
+                encryptedPassword = encryptedPassword.concat(encryptionObject[passwordLetter][choosenSection][randomEncryptionSectionIndex]);
+            }
         }
     }
+
+    console.log({ encryptedPassword, choosenSection })
 
     return { encryptedPassword, choosenSection }; 
 }
 
-
-const representationEncryptionObject = createRepresentationEncryptionObject(3);
-
-const encryptenData = encryptPassword(representationEncryptionObject, '1a2b3c');
-
-
 function decryptPassword(encryptionObject, encryptenData) {
+
     const properytNames = Object.getOwnPropertyNames(encryptenData);
+    const letters = 'qwertyuiopasdfghjklzxcvbnm'.split('');
 
     let decryptedPassword = '';
 
@@ -112,10 +115,31 @@ function decryptPassword(encryptionObject, encryptenData) {
             if (encryptedPassword[i].length === 1 && !isNaN(parseInt(encryptedPassword[i]))) {
                 decryptedPassword = decryptedPassword + encryptedPassword[i];
             } else {
-                
+                const representationEncryptionObjectProperties = Object.getOwnPropertyNames(representationEncryptionObject);
+
+
+
+                for (let j = 0; j < representationEncryptionObjectProperties.length; j++) {
+
+                    encryptionObject[representationEncryptionObjectProperties[j]][choosenSection].find((item, index) => {
+                        if (encryptedPassword[i] === item) {
+                            
+                            
+                            decryptedPassword = decryptedPassword + letters[j];
+                            console.log(letters[j]);
+                        }
+                    })
+                }
             }
         }
     }
+
+    console.log(decryptedPassword);
+    return decryptedPassword;
 }
+
+const representationEncryptionObject = createRepresentationEncryptionObject(3);
+
+const encryptenData = encryptPassword(representationEncryptionObject, '1a2b3c');
 
 decryptPassword(representationEncryptionObject, encryptenData);
