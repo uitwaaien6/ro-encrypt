@@ -3,7 +3,7 @@
 function createRepresentationEncryptionObject(complexity) {
 
     const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890?!'.split('');
-    const letters = 'qwertyuiopasdfghjklzxcvbnm'.split('');
+    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split('');
     const sections = ['apple', 'lemon', 'banana'];
 
     const representationEncryptionObject = {};
@@ -57,7 +57,6 @@ function createRepresentationEncryptionObject(complexity) {
             }
         }
     }
-
     console.log(representationEncryptionObject);
     return representationEncryptionObject;
 }
@@ -78,7 +77,6 @@ function encryptPassword(encryptionObject, password) {
 
         const passwordLetter = passwordLetters[i];
 
-
         if (!isNaN(parseInt(passwordLetter))) {
             encryptedPassword = encryptedPassword.concat(passwordLetter);
         } else {
@@ -98,7 +96,7 @@ function encryptPassword(encryptionObject, password) {
 function decryptPassword(encryptionObject, encryptenData) {
 
     const properytNames = Object.getOwnPropertyNames(encryptenData);
-    const letters = 'qwertyuiopasdfghjklzxcvbnm'.split('');
+    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split('');
 
     let decryptedPassword = '';
 
@@ -126,7 +124,6 @@ function decryptPassword(encryptionObject, encryptenData) {
                             
                             
                             decryptedPassword = decryptedPassword + letters[j];
-                            console.log(letters[j]);
                         }
                     })
                 }
@@ -134,12 +131,14 @@ function decryptPassword(encryptionObject, encryptenData) {
         }
     }
 
-    console.log(decryptedPassword);
     return decryptedPassword;
 }
 
 const representationEncryptionObject = createRepresentationEncryptionObject(3);
 
-const encryptenData = encryptPassword(representationEncryptionObject, '1a2b3c');
+const encryptenData = encryptPassword(representationEncryptionObject, '918273645Uitwaaien');
 
 decryptPassword(representationEncryptionObject, encryptenData);
+
+
+module.exports = { createRepresentationEncryptionObject, encryptPassword, decryptPassword };
