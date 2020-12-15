@@ -11,7 +11,8 @@ function createRepresentationEncryptionObject(complexity) {
         const letter = letters[i];
         representationEncryptionObject[letter] = {};
 
-        for (let j = 0; j < sections.length; j++) { // j represents the section configuration, configure a specific section in the belove code
+        for (let j = 0; j < sections.length; j++) { // j represents the section configuration, configure a specific section in the belove code.
+
 
             const section = sections[j];
             representationEncryptionObject[letter][section] = [];
@@ -27,11 +28,30 @@ function createRepresentationEncryptionObject(complexity) {
 
                 representationEncryptionObject[letter][section] = representationEncryptionObject[letter][section].concat(encryption);
                 encryption = '';
+
+                if (representationEncryptionObject[letter] && representationEncryptionObject[letter][section]) {
+                    const representationEncryptionObjectProperties = Object.getOwnPropertyNames(representationEncryptionObject);
+
+                    for (let m = 0; m < representationEncryptionObjectProperties.length; m++) {
+
+                        for (let n = 0; n < sections.length; n++) {
+                            if (representationEncryptionObject[representationEncryptionObjectProperties[m]][sections[n]]) {
+                                console.log(representationEncryptionObject[representationEncryptionObjectProperties[m]][sections[n]]);
+                            }
+
+                        }
+
+                    }
+                }
+
+
+                // check if any encryption is the same in any of the properties of the representationEncryption;
+
+
             }
         }
     }
-
-    console.log(representationEncryptionObject);
+    console.log(representationEncryptionObject)
     return representationEncryptionObject;
 }
 
