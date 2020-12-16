@@ -2,6 +2,6 @@ const { createRepresentationEncryptionObject, encryptPassword, decryptPassword }
 
 const representationalEncryptionObject = createRepresentationEncryptionObject(3);
 
-const encryptedPassword = encryptPassword(representationalEncryptionObject, '918273645Uitwaaien?!');
+const encryptedPassword = encryptPassword(representationalEncryptionObject, 'erw342');
 
 console.log(decryptPassword(representationalEncryptionObject, encryptedPassword));
