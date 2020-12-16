@@ -99,14 +99,15 @@ function encryptPassword(encryptionObject, password) {
 
 function decryptPassword(encryptionObject, encryptenData) {
 
-    const properytNames = Object.getOwnPropertyNames(encryptenData);
-    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split('');
+    const encryptenDataProperties = Object.getOwnPropertyNames(encryptenData);
+
+    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split(''); // representationEncryptionObjectProperties length is equal to this letters array, it is not efficient but it is working for now
 
     let decryptedPassword = '';
 
-    if (properytNames && encryptionObject) {
-        const encryptedPassword = encryptenData[properytNames[0]]; // encryptedPassword is an Array contains the number and encrypted parts of the password
-        const choosenSection = encryptenData[properytNames[1]]; // choosenSection is the section which represents the array which the encryption is stays in
+    if (encryptenDataProperties && encryptionObject) {
+        const encryptedPassword = encryptenData[encryptenDataProperties[0]]; // encryptedPassword is an Array contains the number and encrypted parts of the password
+        const choosenSection = encryptenData[encryptenDataProperties[1]]; // choosenSection is the section which represents the array which the encryption is stays in
 
         for (let i = 0; i < encryptedPassword.length; i++) {
 
@@ -114,20 +115,18 @@ function decryptPassword(encryptionObject, encryptenData) {
             //    console.log(encryptedPassword[i]);
             //}
 
+            //checking every element of the encryptedPassword which is an array, if it is number or question mark or exclamation mark
             if (encryptedPassword[i].length === 1 && !isNaN(parseInt(encryptedPassword[i])) || encryptedPassword[i] === '?' || encryptedPassword[i] === '!') {
                 decryptedPassword = decryptedPassword + encryptedPassword[i];
-            } else {
-                const representationEncryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
+            } else { // if it is encrypted which means random characters that is more than 1 caharacter usually
+                const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
 
+                for (let j = 0; j < encryptionObjectProperties.length; j++) {
 
-
-                for (let j = 0; j < representationEncryptionObjectProperties.length; j++) {
-
-                    encryptionObject[representationEncryptionObjectProperties[j]][choosenSection].find((item, index) => {
+                    encryptionObject[encryptionObjectProperties[j]][choosenSection].find((item, index) => {
                         if (encryptedPassword[i] === item) {
                             
-                            
-                            decryptedPassword = decryptedPassword + letters[j];
+                            decryptedPassword = decryptedPassword + encryptionObjectProperties[j];
                         }
                     })
                 }
