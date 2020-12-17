@@ -1,12 +1,27 @@
 'use strict';
 
-function createRepresentationEncryptionObject(complexity) {
+function createRepresentationEncryptionObject(complexity = 3) {
 
     const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890?!'.split('');
     const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split('');
-    const sections = ['apple', 'lemon', 'banana'];
+    const sections = ['apple', 'lemon', 'banana', 'watermelon', 'cherry', 'test'];
 
     const representationEncryptionObject = {};
+
+    if (complexity <= 2) {
+        for (let i = 0; i < letters.length; i++) {
+            representationEncryptionObject[letters[i]] = {};
+
+            for (let j = 0; j < sections.length; j++) {
+
+                representationEncryptionObject[letters[i]][sections[j]] = [];
+            }
+
+        }
+
+        console.error(' ! complexity argument of the createEncryptionObject cannot be belov or equal to 2');
+        return representationEncryptionObject;
+    }
 
     for (let i = 0; i < letters.length; i++) {
 
@@ -39,7 +54,9 @@ function createRepresentationEncryptionObject(complexity) {
                             for (let sectionsIndex = 0; sectionsIndex < 3; sectionsIndex++) {
 
                                 if (representationEncryptionObject[letters[m]][sections[n]]) {
-                                    while (encryption === representationEncryptionObject[letters[m]][sections[n]][sectionsIndex]) {
+                                    while (encryption === representationEncryptionObject[letters[m]][sections[0]][sectionsIndex]) {
+                                        console.log(' ~ Same encryption section encryption: ' + representationEncryptionObject[letters[m]][sections[0]], sectionsIndex);
+                                        console.log(' ~ Same encryption letter: ' + letters[m]);
                                         encryption = '';
                                         for (let l = 0; l < complexity; l++) {
                                             const randomEncryptionLetter = Math.floor(Math.random() * encryptionLetters.length);
@@ -58,12 +75,15 @@ function createRepresentationEncryptionObject(complexity) {
         }
     }
 
+    console.log(representationEncryptionObject);
     return representationEncryptionObject;
 }
 
 
 
 function encryptPassword(encryptionObject, password) {
+
+    const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
 
     const sections = Object.getOwnPropertyNames(encryptionObject.a); // apple, lemon, or banana section, for now it doesnt matter which property we take from the representationalEncryptionObject because they all have the same sections;
 
@@ -74,6 +94,17 @@ function encryptPassword(encryptionObject, password) {
     const passwordLetters = password.split('');
 
     let encryptedPassword = [];
+
+    for (let i = 0; i < encryptionObjectProperties.length; i++) {
+        for (let j = 0; j < sections.length; j++) {
+            
+            if (encryptionObject[encryptionObjectProperties[i]][sections[j]].length === 0) {
+                console.error(' ! One or more array in sections of the encryptionObject is empty');
+                console.error(' ! Returning null...');
+                return null;
+            }
+        }
+    }
 
     for (let i = 0; i < passwordLetters.length; i++) {
 
@@ -86,11 +117,11 @@ function encryptPassword(encryptionObject, password) {
                 const choosenSectionLength = encryptionObject[passwordLetter][choosenSection].length;
                 const randomEncryptionSectionIndex = Math.floor(Math.random() * choosenSectionLength);
                 encryptedPassword = encryptedPassword.concat(encryptionObject[passwordLetter][choosenSection][randomEncryptionSectionIndex]);
+            } else {
+                console.error(' ! password Letter couldnt be found while encrypting password in encryptPassword');
             }
         }
     }
-
-    console.log({ encryptedPassword, choosenSection })
 
     return { encryptedPassword, choosenSection }; 
 }
@@ -99,23 +130,24 @@ function encryptPassword(encryptionObject, password) {
 
 function decryptPassword(encryptionObject, encryptenData) {
 
-    const encryptenDataProperties = Object.getOwnPropertyNames(encryptenData);
 
-    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split(''); // representationEncryptionObjectProperties length is equal to this letters array, it is not efficient but it is working for now
+
+
 
     let decryptedPassword = '';
 
-    if (encryptenDataProperties && encryptionObject) {
+    if (encryptionObject && encryptenData) {
+        const encryptenDataProperties = Object.getOwnPropertyNames(encryptenData);
         const encryptedPassword = encryptenData[encryptenDataProperties[0]]; // encryptedPassword is an Array contains the number and encrypted parts of the password
         const choosenSection = encryptenData[encryptenDataProperties[1]]; // choosenSection is the section which represents the array which the encryption is stays in
 
-        for (let i = 0; i < encryptedPassword.length; i++) {
+        for (let i = 0; i < encryptedPassword.length; i++) {     
+            // TODO checking every element of the encryptedPassword which is an array, if it is number or question mark or exclamation mark put it as is. fix later
 
             //if (!isNaN(parseInt(encryptedPassword[i]))) {
             //    console.log(encryptedPassword[i]);
             //}
 
-            //checking every element of the encryptedPassword which is an array, if it is number or question mark or exclamation mark
             if (encryptedPassword[i].length === 1 && !isNaN(parseInt(encryptedPassword[i])) || encryptedPassword[i] === '?' || encryptedPassword[i] === '!') {
                 decryptedPassword = decryptedPassword + encryptedPassword[i];
             } else { // if it is encrypted which means random characters that is more than 1 caharacter usually
