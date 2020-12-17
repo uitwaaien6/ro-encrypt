@@ -58,8 +58,11 @@ function createRepresentationalDatabaseEncryptionObject(complexity = 4) {
 
                                 if (representationEncryptionObject[letters[m]][sections[n]]) {
                                     while (encryption === representationEncryptionObject[letters[m]][sections[n]][sectionsIndex]) {
-                                        console.log(chalk.yellow(' ~ Same encryption section encryption: ' + representationEncryptionObject[letters[m]][sections[0]]), sectionsIndex);
-                                        console.log(chalk.yellow(' ~ Same encryption letter: ') + letters[m]);
+                                        /*
+                                        console.log(` ~ Same Encryption Found in: `, chalk.yellow(letters[m]));
+                                        console.log(` ~ Section: `, chalk.yellow(sections[n]));
+                                        console.log(` ~ Array:`, representationEncryptionObject[letters[m]][sections[0]], ` Index:`, chalk.yellow(sectionsIndex));
+                                        */
                                         encryption = '';
                                         for (let l = 0; l < complexity; l++) {
                                             const randomEncryptionLetter = Math.floor(Math.random() * encryptionLetters.length);
