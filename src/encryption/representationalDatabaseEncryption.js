@@ -2,9 +2,9 @@
 
 const chalk = require('chalk');
 
-function createRepresentationalDatabaseEncryptionObject(complexity = 4) {
+function createRDEObject(complexity = 4) {
 
-    const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890?!'.split('');
+    const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890'.split('');
     const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'.split('');
     const sections = ['apple', 'lemon', 'banana'];
 
@@ -143,9 +143,8 @@ function encryptPassword(encryptionObject, password) {
 
 function decryptPassword(encryptionObject, encryptenData) {
 
-    let decryptedPassword = '';
-
     if (encryptionObject || encryptenData) {
+        let decryptedPassword = '';
         const encryptenDataProperties = Object.getOwnPropertyNames(encryptenData);
         const encryptedPassword = encryptenData[encryptenDataProperties[0]]; // encryptedPassword is an Array contains the number and encrypted parts of the password
         const choosenSection = encryptenData[encryptenDataProperties[1]]; // choosenSection is the section which represents the array which the encryption is stays in
@@ -183,6 +182,6 @@ function decryptPassword(encryptionObject, encryptenData) {
 }
 
 
-module.exports = { createRepresentationalDatabaseEncryptionObject, encryptPassword, decryptPassword };
+module.exports = { createRDEObject, encryptPassword, decryptPassword };
 
 
