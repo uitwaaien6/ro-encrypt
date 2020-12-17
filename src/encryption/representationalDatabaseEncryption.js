@@ -5,7 +5,7 @@ const chalk = require('chalk');
 function createRepresentationalDatabaseEncryptionObject(complexity = 4) {
 
     const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890?!'.split('');
-    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split('');
+    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'.split('');
     const sections = ['apple', 'lemon', 'banana'];
 
     const representationEncryptionObject = {};
@@ -121,7 +121,9 @@ function encryptPassword(encryptionObject, password) {
                     const randomEncryptionSectionIndex = Math.floor(Math.random() * choosenSectionLength);
                     encryptedPassword = encryptedPassword.concat(encryptionObject[passwordLetter][choosenSection][randomEncryptionSectionIndex]);
                 } else {
+                    
                     console.error(chalk.red(' ! password Letter couldnt be found while encrypting password in encryptPassword'));
+                    console.error(chalk.red(` ! The letter couldnt be found is ${passwordLetter}`));
                 }
             }
         }
@@ -179,4 +181,5 @@ function decryptPassword(encryptionObject, encryptenData) {
 
 
 module.exports = { createRepresentationalDatabaseEncryptionObject, encryptPassword, decryptPassword };
+
 
