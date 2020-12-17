@@ -18,7 +18,6 @@ function createRepresentationalDatabaseEncryptionObject(complexity = 4) {
 
                 representationEncryptionObject[letters[i]][sections[j]] = [];
             }
-
         }
 
         console.error(chalk.red(' ! Complexity argument of the createEncryptionObject cannot be belov or equal to 2'));
@@ -47,7 +46,7 @@ function createRepresentationalDatabaseEncryptionObject(complexity = 4) {
                     encryption = encryption + encryptionLetters[randomEncryptionLetter];
                 }
 
-                // in here we are iterating through all the sections index in all the properties of the object to avoid the same encryption in the object
+                // in here we are iterating through all the sections index in all the properties of the object to avoid the same encryption in the object properties, doesnt matter if we get same encryption in the same properties array but we change it due to syntax
                 if (representationEncryptionObject[letter] && representationEncryptionObject[letter][section]) {
                     const representationEncryptionObjectProperties = Object.getOwnPropertyNames(representationEncryptionObject);
 
@@ -58,7 +57,7 @@ function createRepresentationalDatabaseEncryptionObject(complexity = 4) {
                             for (let sectionsIndex = 0; sectionsIndex < 3; sectionsIndex++) {
 
                                 if (representationEncryptionObject[letters[m]][sections[n]]) {
-                                    while (encryption === representationEncryptionObject[letters[m]][sections[0]][sectionsIndex]) {
+                                    while (encryption === representationEncryptionObject[letters[m]][sections[n]][sectionsIndex]) {
                                         console.log(chalk.yellow(' ~ Same encryption section encryption: ' + representationEncryptionObject[letters[m]][sections[0]]), sectionsIndex);
                                         console.log(chalk.yellow(' ~ Same encryption letter: ') + letters[m]);
                                         encryption = '';
