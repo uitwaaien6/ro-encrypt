@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 
-function createRepresentationEncryptionObject(complexity = 4) {
+function createRepresentationalDatabaseEncryptionObject(complexity = 4) {
 
     const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890?!'.split('');
     const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHKLZXCVBNM'.split('');
@@ -86,7 +86,7 @@ function createRepresentationEncryptionObject(complexity = 4) {
 
 function encryptPassword(encryptionObject, password) {
 
-    if (encryptionObject && password) {
+    if (encryptionObject || password) {
         const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
 
         const sections = Object.getOwnPropertyNames(encryptionObject.a); // apple, lemon, or banana section, for now it doesnt matter which property we take from the representationalEncryptionObject because they all have the same sections;
@@ -129,7 +129,7 @@ function encryptPassword(encryptionObject, password) {
     
         return { encryptedPassword, choosenSection }; 
     } else {
-        console.error(chalk.red('encryptionObject or password couldnt be found'));
+        console.error(chalk.red(' ! encryptionObject or password couldnt be found'));
         return null;
     }
 
@@ -141,7 +141,7 @@ function decryptPassword(encryptionObject, encryptenData) {
 
     let decryptedPassword = '';
 
-    if (encryptionObject && encryptenData) {
+    if (encryptionObject || encryptenData) {
         const encryptenDataProperties = Object.getOwnPropertyNames(encryptenData);
         const encryptedPassword = encryptenData[encryptenDataProperties[0]]; // encryptedPassword is an Array contains the number and encrypted parts of the password
         const choosenSection = encryptenData[encryptenDataProperties[1]]; // choosenSection is the section which represents the array which the encryption is stays in
@@ -179,5 +179,5 @@ function decryptPassword(encryptionObject, encryptenData) {
 }
 
 
-module.exports = { createRepresentationEncryptionObject, encryptPassword, decryptPassword };
+module.exports = { createRepresentationalDatabaseEncryptionObject, encryptPassword, decryptPassword };
 

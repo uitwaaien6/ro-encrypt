@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-const { createRepresentationEncryptionObject, encryptPassword, decryptPassword } = require('./encryption/representationalDatabaseEncryption');
+const { createRepresentationalDatabaseEncryptionObject, encryptPassword, decryptPassword } = require('./encryption/representationalDatabaseEncryption');
 
-const representationalEncryptionObject = createRepresentationEncryptionObject();
+const representationalDatabaseEncryptionObject = createRepresentationalDatabaseEncryptionObject();
 
-const encryptedPassword = encryptPassword(representationalEncryptionObject, process.env.PASSWORD);
+const encryptedPassword = encryptPassword(representationalDatabaseEncryptionObject, process.env.PASSWORD);
 
-decryptPassword(representationalEncryptionObject, encryptedPassword);
+decryptPassword(representationalDatabaseEncryptionObject, encryptedPassword);
