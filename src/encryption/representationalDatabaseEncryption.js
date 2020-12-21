@@ -1,4 +1,4 @@
-'use strict';
+
 
 const chalk = require('chalk');
 
@@ -95,7 +95,7 @@ function encryptPassword(encryptionObject, password) {
         const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
 
         const sections = Object.getOwnPropertyNames(encryptionObject.a); // apple, lemon, or banana section, for now it doesnt matter which property we take from the representationalEncryptionObject because they all have the same sections;
-    
+
         const randomSectionIndex = Math.floor(Math.random() * sections.length);
     
         const choosenSection = sections[randomSectionIndex]; // choosen section for this encryption
@@ -151,11 +151,13 @@ function decryptPassword(encryptionObject, encryptenData) {
 
     if (encryptionObject && encryptenData) {
 
-        const sections = ['apple', 'lemon', 'banana'];
-
         let decryptedPassword = '';
 
         const encryptenDataProperties = Object.getOwnPropertyNames(encryptenData);
+        const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
+
+        // here we are filling the sections array with the property names of the encryptionObject's firs property, we are taking the first property because it is the safest but doesnt matter which letter property you take for the sections they all the same.
+        const sections = Object.getOwnPropertyNames(encryptionObject[encryptionObjectProperties[0]]);
 
         const encryptedPassword = encryptenData[encryptenDataProperties[0]]; // encryptedPassword is an Array contains the number and encrypted parts of the password
         const choosenSection = encryptenData[encryptenDataProperties[1]]; // choosenSection is the section which represents the array which the encryption is stays in
@@ -173,7 +175,7 @@ function decryptPassword(encryptionObject, encryptenData) {
             if (encryptedPassword[i].length === 1 && !isNaN(parseInt(encryptedPassword[i])) || encryptedPassword[i] === '?' || encryptedPassword[i] === '!') {
                 decryptedPassword = decryptedPassword + encryptedPassword[i];
             } else { // if it is encrypted which means random characters that is more than 1 caharacter usually
-                const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
+
 
                 for (let j = 0; j < encryptionObjectProperties.length; j++) {
 
@@ -195,18 +197,13 @@ function decryptPassword(encryptionObject, encryptenData) {
                         // if the encryptenData has no choosenSection iterate through every sections of the encryptenObject to find the encryptions
                         // it doesnt make sense I know, because why whould we include the choosenSection in the encryptenData.
                         // well I believe it makes the program more secure.
-                        for (let k = 0; k < sections.length; k++) {
-
-                            
+                        for (let k = 0; k < sections.length; k++) {                            
                             encryptionObject[encryptionObjectProperties[j]][sections[k]].find((item, index) => {
                                 if (encryptedPassword[i] === item) {
-                                    
                                     decryptedPassword = decryptedPassword + encryptionObjectProperties[j];
                                 }
                             });
-                            
                         }
-
                     }
                 }
             }
@@ -219,5 +216,6 @@ function decryptPassword(encryptionObject, encryptenData) {
     }
 
 }
+
 
 module.exports = { createRDEObject, encryptPassword, decryptPassword };
