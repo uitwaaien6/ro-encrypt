@@ -9,4 +9,6 @@ const rdeObject = rde.createRDEObject();
 
 const rde_encryptedPassword = rde.encryptPassword(rdeObject, process.env.PASSWORD);
 
+console.log(rde_encryptedPassword);
+
 console.log(rde.decryptPassword(rdeObject, rde_encryptedPassword));

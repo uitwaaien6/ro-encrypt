@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 function createRDEObject(complexity = 4) {
 
-    const encryptionLetters = '1234567890qwertyuiopasdfghjklzxcvbnm1234567890'.split('');
+    const encryptionLetters = 't23shi4b67cvy95qj7l0g63e5uapox191zmdnk0w4288rf'.split('');
 
     const letters = 'chr_q,chr_w,chr_e,chr_r,chr_t,chr_y,chr_u,chr_i,chr_o,chr_p,chr_a,chr_s,chr_d,chr_f,chr_g,chr_h,chr_j,chr_k,chr_l,chr_z,chr_x,chr_c,chr_v,chr_b,chr_n,chr_m,chr_Q,chr_W,chr_E,chr_R,chr_T,chr_Y,chr_U,chr_I,chr_O,chr_P,chr_A,chr_S,chr_D,chr_F,chr_G,chr_H,chr_J,chr_K,chr_L,chr_Z,chr_X,chr_C,chr_V,chr_B,chr_N,chr_M,chr_1,chr_2,chr_3,chr_4,chr_5,chr_6,chr_7,chr_8,chr_9,chr_0,chr_questionMark,chr_exclamationMark,chr_atSign,chr_dollarSign,chr_percentSign,chr_numberSign,chr_ampersand,chr_multiplicationSign,chr_divisionSign,chr_plusSign,chr_minusSign,chr_underscore'.split(',');
 
@@ -22,10 +22,10 @@ function createRDEObject(complexity = 4) {
             }
         }
 
-        console.error(chalk.red(' ! Complexity argument of the createrdeObject cannot be belov or equal to 2'));
-        console.log(' ~ Creating an empty Encryption Object...');
-        console.log(chalk.yellow(' ! Recommended complexity number is 4 or above'));
-        return rdeObject;
+        console.error(chalk.red(' ! Complexity argument of the createRDEObject cannot be belov or equal to 2'));
+        console.log(' ~ Creating an empty RDE Object...');
+        console.log(chalk.yellow(' ! Recommended complexity number is 4 or above, default complexity number is set to 4'));
+        return null;
     }
 
     for (let i = 0; i < letters.length; i++) {
@@ -104,7 +104,7 @@ function encryptPassword(rdeObject, password) {
 
         const complexity = rdeObject[rdeObjectProperties[0]][choosenSection][0].length;
     
-        const specialChars = '!@#$%&*+_?';
+        const specialChars = '!@#$%&*+-/_?';
 
         let encryptedPassword = '';
     
@@ -228,8 +228,6 @@ function decryptPassword(rdeObject, encryptedPassword) {
         const complexity = parseInt(encryptedPasswordSections[0].match(/\d+/)[0]);
 
         encryptedPassword = encryptedPasswordSections[1];
-
-        console.log(encryptedPassword);
 
         for (let i = 0; i <= encryptedPassword.length ; i++) {
 
