@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 function createRDEObject(complexity = 4) {
 
-    const encryptionLetters = 't23shi4b67cvy95qj7l0g63e5uapox191zmdnk0w4288rf'.split('');
+    const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.split('');
 
     const letters = 'chr_q,chr_w,chr_e,chr_r,chr_t,chr_y,chr_u,chr_i,chr_o,chr_p,chr_a,chr_s,chr_d,chr_f,chr_g,chr_h,chr_j,chr_k,chr_l,chr_z,chr_x,chr_c,chr_v,chr_b,chr_n,chr_m,chr_Q,chr_W,chr_E,chr_R,chr_T,chr_Y,chr_U,chr_I,chr_O,chr_P,chr_A,chr_S,chr_D,chr_F,chr_G,chr_H,chr_J,chr_K,chr_L,chr_Z,chr_X,chr_C,chr_V,chr_B,chr_N,chr_M,chr_1,chr_2,chr_3,chr_4,chr_5,chr_6,chr_7,chr_8,chr_9,chr_0,chr_questionMark,chr_exclamationMark,chr_atSign,chr_dollarSign,chr_percentSign,chr_numberSign,chr_ampersand,chr_multiplicationSign,chr_divisionSign,chr_plusSign,chr_minusSign,chr_underscore'.split(',');
 
@@ -39,7 +39,7 @@ function createRDEObject(complexity = 4) {
             const section = sections[j];
             rdeObject[letter][section] = [];
 
-            for (let k = 0; k < 3; k++) { // k represents how many elements should a section have, example ['example1', 'example2', 'example3'];
+            for (let k = 0; k < complexity + 1; k++) { // k represents how many elements should a section have, example ['example1', 'example2', 'example3'];
 
                 let encryption = '';
 
@@ -86,6 +86,7 @@ function createRDEObject(complexity = 4) {
         }
     }
 
+    console.log(rdeObject)
     return rdeObject;
 }
 
@@ -279,6 +280,9 @@ function decryptPassword(rdeObject, encryptedPassword) {
                                         break;
                                     case 'minus':
                                         decryptedPassword += '-';
+                                        break;
+                                    case 'underscore':
+                                        decryptedPassword += '_';
                                         break;
                                     default:
                                         decryptedPassword += decryptedChar;
