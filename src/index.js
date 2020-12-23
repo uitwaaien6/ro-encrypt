@@ -1,10 +1,12 @@
+"use strict";
+
 require('dotenv').config();
 
 const rde = require('./encryption/representationalDatabaseEncryption');
 
 //sarmaz
-const rde_object = rde.createRDEObject();
-const rde_encryptenData = rde.encryptPassword(rde_object, process.env.PASSWORD);
-const rde_decryptedPassword = rde.decryptPassword(rde_object, rde_encryptenData);
+const rdeObject = rde.createRDEObject();
 
-console.log(rde_decryptedPassword);
+const rde_encryptedPassword = rde.encryptPassword(rdeObject, process.env.PASSWORD);
+
+console.log(rde.decryptPassword(rdeObject, rde_encryptedPassword));

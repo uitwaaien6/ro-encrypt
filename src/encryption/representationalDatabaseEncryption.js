@@ -1,41 +1,43 @@
-
+"use strict";
 
 const chalk = require('chalk');
 
 function createRDEObject(complexity = 4) {
 
-    const encryptionLetters = 'qwertyuiopasdfghjklzxcvbnm1234567890'.split('');
-    const letters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'.split('');
+    const encryptionLetters = '1234567890qwertyuiopasdfghjklzxcvbnm1234567890'.split('');
+
+    const letters = 'chr_q,chr_w,chr_e,chr_r,chr_t,chr_y,chr_u,chr_i,chr_o,chr_p,chr_a,chr_s,chr_d,chr_f,chr_g,chr_h,chr_j,chr_k,chr_l,chr_z,chr_x,chr_c,chr_v,chr_b,chr_n,chr_m,chr_Q,chr_W,chr_E,chr_R,chr_T,chr_Y,chr_U,chr_I,chr_O,chr_P,chr_A,chr_S,chr_D,chr_F,chr_G,chr_H,chr_J,chr_K,chr_L,chr_Z,chr_X,chr_C,chr_V,chr_B,chr_N,chr_M,chr_1,chr_2,chr_3,chr_4,chr_5,chr_6,chr_7,chr_8,chr_9,chr_0,chr_questionMark,chr_exclamationMark,chr_atSign,chr_dollarSign,chr_percentSign,chr_numberSign,chr_ampersand,chr_multiplicationSign,chr_divisionSign,chr_plusSign,chr_minusSign,chr_underscore'.split(',');
+
     const sections = ['apple', 'lemon', 'banana'];
 
-    const representationEncryptionObject = {};
+    const rdeObject = {};
 
     if (complexity <= 2) {
         for (let i = 0; i < letters.length; i++) {
-            representationEncryptionObject[letters[i]] = {};
+            rdeObject[letters[i]] = {};
 
             for (let j = 0; j < sections.length; j++) {
 
-                representationEncryptionObject[letters[i]][sections[j]] = [];
+                rdeObject[letters[i]][sections[j]] = [];
             }
         }
 
-        console.error(chalk.red(' ! Complexity argument of the createEncryptionObject cannot be belov or equal to 2'));
+        console.error(chalk.red(' ! Complexity argument of the createrdeObject cannot be belov or equal to 2'));
         console.log(' ~ Creating an empty Encryption Object...');
         console.log(chalk.yellow(' ! Recommended complexity number is 4 or above'));
-        return representationEncryptionObject;
+        return rdeObject;
     }
 
     for (let i = 0; i < letters.length; i++) {
 
         const letter = letters[i];
-        representationEncryptionObject[letter] = {};
+        rdeObject[letter] = {};
 
         for (let j = 0; j < sections.length; j++) { // j represents the section configuration, configure a specific section in the belove code.
 
 
             const section = sections[j];
-            representationEncryptionObject[letter][section] = [];
+            rdeObject[letter][section] = [];
 
             for (let k = 0; k < 3; k++) { // k represents how many elements should a section have, example ['example1', 'example2', 'example3'];
 
@@ -49,23 +51,23 @@ function createRDEObject(complexity = 4) {
                 // in here we are iterating through all the sections index in all the properties of the object to avoid the same encryption in the object properties, doesnt matter if we get same encryption in the same properties array but we change it due to syntax
                 // but if we get same encryption in different properties of the representationObject password will be decrypted wrongly.
                 // because it will take the first property letter of the representaionObject when it is matched with the encryptedPassword so
-                // all the properties has to have unique encryptions in it, doesnt matter if we get same in sections though.
-                if (representationEncryptionObject[letter] && representationEncryptionObject[letter][section]) {
-                    const representationEncryptionObjectProperties = Object.getOwnPropertyNames(representationEncryptionObject);
+                // all the properties has to have unique encryptions in it.
+                if (rdeObject[letter] && rdeObject[letter][section]) {
+                    const rdeObjectProperties = Object.getOwnPropertyNames(rdeObject);
 
-                    for (let m = 0; m < representationEncryptionObjectProperties.length; m++) {
+                    for (let m = 0; m < rdeObjectProperties.length; m++) {
 
                         for (let n = 0; n < sections.length; n++) {
 
-                            for (let sectionsIndex = 0; sectionsIndex < 3; sectionsIndex++) {
+                            for (let sectionsIndex = 0; sectionsIndex < 4; sectionsIndex++) {
 
-                                if (representationEncryptionObject[letters[m]][sections[n]]) {
-                                    while (encryption === representationEncryptionObject[letters[m]][sections[n]][sectionsIndex]) {
-                                        /*
+                                if (rdeObject[letters[m]][sections[n]]) {
+                                    while (encryption === rdeObject[letters[m]][sections[n]][sectionsIndex]) {
+                                        // development purposes
                                         console.log(` ~ Same Encryption Found in: `, chalk.yellow(letters[m]));
                                         console.log(` ~ Section: `, chalk.yellow(sections[n]));
-                                        console.log(` ~ Array:`, representationEncryptionObject[letters[m]][sections[0]], ` Index:`, chalk.yellow(sectionsIndex));
-                                        */
+                                        console.log(` ~ Array:`, rdeObject[letters[m]][sections[0]], ` Index:`, chalk.yellow(sectionsIndex));
+                                        
                                         encryption = '';
                                         for (let l = 0; l < complexity; l++) {
                                             const randomEncryptionLetter = Math.floor(Math.random() * encryptionLetters.length);
@@ -78,68 +80,132 @@ function createRDEObject(complexity = 4) {
                     }
                 }
 
-                representationEncryptionObject[letter][section] = representationEncryptionObject[letter][section].concat(encryption);
+                rdeObject[letter][section] = rdeObject[letter][section].concat(encryption);
                 encryption = '';
             }
         }
     }
 
-    return representationEncryptionObject;
+    return rdeObject;
 }
 
 
 
-function encryptPassword(encryptionObject, password) {
+function encryptPassword(rdeObject, password) {
 
-    if (encryptionObject && password) {
-        const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
+    if (rdeObject && password) {
 
-        const sections = Object.getOwnPropertyNames(encryptionObject.a); // apple, lemon, or banana section, for now it doesnt matter which property we take from the representationalEncryptionObject because they all have the same sections;
+        const rdeObjectProperties = Object.getOwnPropertyNames(rdeObject);
+
+        const sections = Object.getOwnPropertyNames(rdeObject[rdeObjectProperties[0]]); // apple, lemon, or banana section, for now it doesnt matter which property we take from the representationalrdeObject because they all have the same sections;
 
         const randomSectionIndex = Math.floor(Math.random() * sections.length);
-    
         const choosenSection = sections[randomSectionIndex]; // choosen section for this encryption
+
+        const complexity = rdeObject[rdeObjectProperties[0]][choosenSection][0].length;
     
-        const passwordLetters = password.split('');
+        const specialChars = '!@#$%&*+_?';
+
+        let encryptedPassword = '';
     
-        let encryptedPassword = [];
-    
-        for (let i = 0; i < encryptionObjectProperties.length; i++) {
+        for (let i = 0; i < rdeObjectProperties.length; i++) {
             for (let j = 0; j < sections.length; j++) {
                 
-                if (encryptionObject[encryptionObjectProperties[i]][sections[j]].length === 0) {
-                    console.error(chalk.red(' ! One or more array in sections of the encryptionObject is empty'));
+                if (rdeObject[rdeObjectProperties[i]][sections[j]].length === 0) {
+                    console.error(chalk.red(' ! One or more array in sections of the rdeObject is empty'));
                     console.error(chalk.red(' ! Returning null...'));
                     return null;
                 }
             }
         }
     
-        for (let i = 0; i < passwordLetters.length; i++) {
+        for (let i = 0; i < password.length; i++) {
     
-            const passwordLetter = passwordLetters[i];
 
-            // if passwordLetter is number or question mark or exclamation mark put it to the encryptedPassword as is, will improve in the future
-            // ! Security vulnerability because if a person has a password that contains only numbers it will not be encrypted.
-            if (!isNaN(parseInt(passwordLetter)) || passwordLetter === '?' || passwordLetter === '!') {
-                encryptedPassword = encryptedPassword.concat(passwordLetter);
-            } else {
-                if (encryptionObject[passwordLetter]) {
-                    // here we are choosing a random encryption from the choosenSection array of the passwordLetter of the encryptionObject
-                    const choosenSectionLength = encryptionObject[passwordLetter][choosenSection].length;
-                    const randomEncryptionSectionIndex = Math.floor(Math.random() * choosenSectionLength);
-                    encryptedPassword = encryptedPassword.concat(encryptionObject[passwordLetter][choosenSection][randomEncryptionSectionIndex]);
-                } else {
-                    
-                    console.error(chalk.red(` ! password Letter couldnt be found while encrypting password in encryptPassword`));
-                    console.error(chalk.red(` ! The letter couldnt be found is ${passwordLetter}`));
+            const passwordLetter = password[i]; 
+            
+            for (let j = 0; j < specialChars.length; j++) {
+
+                if (passwordLetter === specialChars[j]) {
+
+                    const rdeObjectPropertyDivision = rdeObjectProperties[0].split('_');
+
+                    const rdeObjectPropertySymbol = rdeObjectPropertyDivision[0];
+                    const rdeObjectPropertyLetter = rdeObjectPropertyDivision[1];
+
+                    // here we are filterin which special character is represents its name and we are encrypting that specific property of the rdeObject because we cannot specical character as a property name of the javascript object (rdeObject)
+
+                    switch (passwordLetter) {
+                        case '?':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_questionMark`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_questionMark`][choosenSection].length)];
+                            break;
+                        case '!':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_exclamationMark`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_exclamationMark`][choosenSection].length)];
+                            break;
+                        case '@':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_atSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_atSign`][choosenSection].length)];
+                            break;
+                        case '$':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_dollarSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_dollarSign`][choosenSection].length)];
+                            break;
+                        case '%':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_percentSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_percentSign`][choosenSection].length)];
+                            break;
+                        case '#':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_numberSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_numberSign`][choosenSection].length)];
+                            break;
+                        case '&':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_ampersand`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_ampersand`][choosenSection].length)];
+                            break;
+                        case '*':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_multiplicationSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_multiplicationSign`][choosenSection].length)];
+                            break;
+                        case '/':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_divisionSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_divisionSign`][choosenSection].length)];
+                            break;
+                        case '+':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_plusSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_plusSign`][choosenSection].length)];
+                            break;
+                        case '-':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_minusSign`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_minusSign`][choosenSection].length)];
+                            break;
+                        case '_':
+                            encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_underscore`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_underscore`][choosenSection].length)];
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                
+            }
+
+            for (let j = 0; j < rdeObjectProperties.length; j++) {
+
+                // here we are iterating through all the properties of the rdeObject and dividing their sections to two part
+                // for example rdeObjectPropertyDivision is possible to look like:
+                //                      ['chr', 'a']  
+                const rdeObjectPropertyDivision = rdeObjectProperties[j].split('_');
+
+                const rdeObjectPropertySymbol = rdeObjectPropertyDivision[0];
+                const rdeObjectPropertyLetter = rdeObjectPropertyDivision[1];
+
+                if (passwordLetter === rdeObjectPropertyLetter) {
+
+                    // here we are choosing a random encryption from the choosenSection array of the passwordLetter of the rdeObject
+                    // the length of the choosen section
+                    const choosenSectionLength = rdeObject[`${rdeObjectPropertySymbol}_${passwordLetter}`][choosenSection].length;
+                    const randomIndex = Math.floor(Math.random() * choosenSectionLength);
+                    encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_${passwordLetter}`][choosenSection][randomIndex];
+
+                } 
+
+
             }
         }
     
-        return { encryptedPassword, choosenSection }; 
+        return `rde${complexity}.${encryptedPassword}`; 
     } else {
-        console.error(chalk.red(' ! encryptionObject or password couldnt be found'));
+        console.error(chalk.red(' ! rdeObject or password couldnt be found'));
         return null;
     }
 
@@ -147,71 +213,94 @@ function encryptPassword(encryptionObject, password) {
 
 
 
-function decryptPassword(encryptionObject, encryptenData) {
+function decryptPassword(rdeObject, encryptedPassword) {
 
-    if (encryptionObject && encryptenData) {
+    if (rdeObject && encryptedPassword) {
 
         let decryptedPassword = '';
 
-        const encryptenDataProperties = Object.getOwnPropertyNames(encryptenData);
-        const encryptionObjectProperties = Object.getOwnPropertyNames(encryptionObject);
+        const rdeObjectProperties = Object.getOwnPropertyNames(rdeObject);
 
-        // here we are filling the sections array with the property names of the encryptionObject's firs property, we are taking the first property because it is the safest but doesnt matter which letter property you take for the sections they all the same.
-        const sections = Object.getOwnPropertyNames(encryptionObject[encryptionObjectProperties[0]]);
+        const sections = Object.getOwnPropertyNames(rdeObject[rdeObjectProperties[0]])
 
-        const encryptedPassword = encryptenData[encryptenDataProperties[0]]; // encryptedPassword is an Array contains the number and encrypted parts of the password
-        const choosenSection = encryptenData[encryptenDataProperties[1]]; // choosenSection is the section which represents the array which the encryption is stays in
+        const encryptedPasswordSections = encryptedPassword.split('.');
 
-        for (let i = 0; i < encryptedPassword.length; i++) {     
-            // TODO checking every element of the encryptedPassword which is an array, if it is number or question mark or exclamation mark put it as is. fix later
+        const complexity = parseInt(encryptedPasswordSections[0].match(/\d+/)[0]);
 
-            //if (!isNaN(parseInt(encryptedPassword[i]))) {
-            //    console.log(encryptedPassword[i]);
-            //}
+        encryptedPassword = encryptedPasswordSections[1];
 
+        console.log(encryptedPassword);
 
-            // iterating through all the elements of the encryptedPassword array, if the element we iterate through has 1 length and if it is number
-            // when we conver it to int with parseInt, it means that it is a number so we put the element as is into to decryptedPassword.
-            if (encryptedPassword[i].length === 1 && !isNaN(parseInt(encryptedPassword[i])) || encryptedPassword[i] === '?' || encryptedPassword[i] === '!') {
-                decryptedPassword = decryptedPassword + encryptedPassword[i];
-            } else { // if it is encrypted which means random characters that is more than 1 caharacter usually
+        for (let i = 0; i <= encryptedPassword.length ; i++) {
 
+            if (i % complexity === 0) {
 
-                for (let j = 0; j < encryptionObjectProperties.length; j++) {
+                // extract the encryption from the encryptedPassword by seeking through with the coefficients of the complexity
 
-                    if (choosenSection) {
+                const extractedEncryption = encryptedPassword.substr(i, complexity);
 
-                        // search through the choosenSections to find the representational encryptions
-                        encryptionObject[encryptionObjectProperties[j]][choosenSection].find((item, index) => {
-                            if (encryptedPassword[i] === item) {
+                for (let j = 0; j < rdeObjectProperties.length; j++) {
+                    
+                    for (let l = 0; l < sections.length; l++) {
+
+                        rdeObject[rdeObjectProperties[j]][sections[l]].find((item, index) => {
+                            if (extractedEncryption === item) {
+
+                                const decryptedChar = rdeObjectProperties[j].split('_')[1];
+
+                                switch (decryptedChar) {
+                                    case 'questionMark':
+                                        decryptedPassword += '?';
+                                        break;
+                                    case 'exclamationMark':
+                                        decryptedPassword += '!';
+                                        break;
+                                    case 'atSign':
+                                        decryptedPassword += '@';
+                                        break;
+                                    case 'dollarSign':
+                                        decryptedPassword += '$';
+                                        break;
+                                    case 'percentSign':
+                                        decryptedPassword += '%';
+                                        break;
+                                    case 'numberSign':
+                                        decryptedPassword += '#';
+                                        break;
+                                    case 'ampersand':
+                                        decryptedPassword += '&';
+                                        break;
+                                    case 'multiplicationSign':
+                                        decryptedPassword += '*';
+                                        break;
+                                    case 'divisionSign':
+                                        decryptedPassword += '/';
+                                        break;
+                                    case 'plusSign':
+                                        decryptedPassword += '+';
+                                        break;
+                                    case 'minus':
+                                        decryptedPassword += '-';
+                                        break;
+                                    default:
+                                        decryptedPassword += decryptedChar;
+                                        break;
+                                }
                                 
-                                // iterating through every single properties of the encryptionObject which are letters like a, b, b
-                                // if item in the choosenSection is match with the encryptedPasswords elements it means that is the letter
-                                // so it is the same thing we cane take that property from the encryptionObjectProperties array becasue we already
-                                // iterating through it in order to look all the letters of the encryptionObject.
-                                decryptedPassword = decryptedPassword + encryptionObjectProperties[j];
                             }
                         });
 
-                    } else {
-                        // if the encryptenData has no choosenSection iterate through every sections of the encryptenObject to find the encryptions
-                        // it doesnt make sense I know, because why whould we include the choosenSection in the encryptenData.
-                        // well I believe it makes the program more secure.
-                        for (let k = 0; k < sections.length; k++) {                            
-                            encryptionObject[encryptionObjectProperties[j]][sections[k]].find((item, index) => {
-                                if (encryptedPassword[i] === item) {
-                                    decryptedPassword = decryptedPassword + encryptionObjectProperties[j];
-                                }
-                            });
-                        }
                     }
+
                 }
+
             }
+
         }
 
         return decryptedPassword;
     } else {
-        console.error(chalk.red(' ! encryptionObject or encryptenData couldnt be found'));
+        console.error(chalk.red(' ! rdeObject or encryptedPassword couldnt be found'));
         return null;
     }
 
