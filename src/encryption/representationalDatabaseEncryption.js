@@ -44,7 +44,7 @@ function createRDEObject(complexity = 3) {
             while (sectionNameEncryption === createdSections[j]) {
                 sectionNameEncryption = '';
 
-                for (let k = 0; k < 1; k++) {
+                for (let k = 0; k < complexity * 4; k++) {
                     const randomSectionNameEncryptionIndex = Math.floor(Math.random() * sectionNameEncryptionLetters.length);
                     sectionNameEncryption += sectionNameEncryptionLetters[randomSectionNameEncryptionIndex];
                 }
@@ -117,7 +117,7 @@ function createRDEObject(complexity = 3) {
         }
     }
 
-    console.log(rdeObject)
+    //console.log(rdeObject)
     return rdeObject;
 }
 
