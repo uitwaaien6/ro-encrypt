@@ -2,15 +2,7 @@
 
 const chalk = require('chalk');
 
-function createRDEObject(complexity = 4) {
-
-    const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.split('');
-
-    const letters = 'chr_q,chr_w,chr_e,chr_r,chr_t,chr_y,chr_u,chr_i,chr_o,chr_p,chr_a,chr_s,chr_d,chr_f,chr_g,chr_h,chr_j,chr_k,chr_l,chr_z,chr_x,chr_c,chr_v,chr_b,chr_n,chr_m,chr_Q,chr_W,chr_E,chr_R,chr_T,chr_Y,chr_U,chr_I,chr_O,chr_P,chr_A,chr_S,chr_D,chr_F,chr_G,chr_H,chr_J,chr_K,chr_L,chr_Z,chr_X,chr_C,chr_V,chr_B,chr_N,chr_M,chr_1,chr_2,chr_3,chr_4,chr_5,chr_6,chr_7,chr_8,chr_9,chr_0,chr_questionMark,chr_exclamationMark,chr_atSign,chr_dollarSign,chr_percentSign,chr_numberSign,chr_ampersand,chr_multiplicationSign,chr_divisionSign,chr_plusSign,chr_minusSign,chr_underscore'.split(',');
-
-    const sections = ['apple', 'lemon', 'banana'];
-
-    const rdeObject = {};
+function createRDEObject(complexity = 3) {
 
     if (complexity <= 2) {
         for (let i = 0; i < letters.length; i++) {
@@ -28,6 +20,45 @@ function createRDEObject(complexity = 4) {
         return null;
     }
 
+    const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
+
+    const sectionNameEncryptionLetters = 'qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
+
+    const letters = 'chr_q,chr_w,chr_e,chr_r,chr_t,chr_y,chr_u,chr_i,chr_o,chr_p,chr_a,chr_s,chr_d,chr_f,chr_g,chr_h,chr_j,chr_k,chr_l,chr_z,chr_x,chr_c,chr_v,chr_b,chr_n,chr_m,chr_Q,chr_W,chr_E,chr_R,chr_T,chr_Y,chr_U,chr_I,chr_O,chr_P,chr_A,chr_S,chr_D,chr_F,chr_G,chr_H,chr_J,chr_K,chr_L,chr_Z,chr_X,chr_C,chr_V,chr_B,chr_N,chr_M,chr_1,chr_2,chr_3,chr_4,chr_5,chr_6,chr_7,chr_8,chr_9,chr_0,chr_questionMark,chr_exclamationMark,chr_atSign,chr_dollarSign,chr_percentSign,chr_numberSign,chr_ampersand,chr_multiplicationSign,chr_divisionSign,chr_plusSign,chr_minusSign,chr_underscore'.split(',');
+
+    let createdSections = [];
+
+    for (let i = 0; i < complexity * 2; i++) {
+
+        let sectionNameEncryption = '';
+        
+        for (let j = 0; j < complexity * 4; j++) {
+            
+            const randomSectionNameEncryptionIndex = Math.floor(Math.random() * sectionNameEncryptionLetters.length);
+            sectionNameEncryption += sectionNameEncryptionLetters[randomSectionNameEncryptionIndex];
+            
+        }
+
+        for (let j = 0; j < complexity; j++) {
+
+            while (sectionNameEncryption === createdSections[j]) {
+                sectionNameEncryption = '';
+
+                for (let k = 0; k < 1; k++) {
+                    const randomSectionNameEncryptionIndex = Math.floor(Math.random() * sectionNameEncryptionLetters.length);
+                    sectionNameEncryption += sectionNameEncryptionLetters[randomSectionNameEncryptionIndex];
+                }
+            }
+            
+        }
+
+        createdSections = createdSections.concat(sectionNameEncryption);
+    }
+
+    const sections = [...createdSections];
+
+    const rdeObject = {};
+
     for (let i = 0; i < letters.length; i++) {
 
         const letter = letters[i];
@@ -39,11 +70,11 @@ function createRDEObject(complexity = 4) {
             const section = sections[j];
             rdeObject[letter][section] = [];
 
-            for (let k = 0; k < complexity + 1; k++) { // k represents how many elements should a section have, example ['example1', 'example2', 'example3'];
+            for (let k = 0; k < complexity * 2; k++) { // k represents how many elements should a section have, example: sectionName: ['SDF', 'SDF', 'SDFD'];
 
                 let encryption = '';
 
-                for (let l = 0; l < complexity; l++) {
+                for (let l = 0; l < complexity * 2; l++) {
                     const randomEncryptionLetter = Math.floor(Math.random() * encryptionLetters.length);
                     encryption = encryption + encryptionLetters[randomEncryptionLetter];
                 }
@@ -204,7 +235,7 @@ function encryptPassword(rdeObject, password) {
             }
         }
     
-        return `rde${complexity}.${encryptedPassword}`; 
+        return `rde${complexity}.${encryptedPassword}.${choosenSection}`; 
     } else {
         console.error(chalk.red(' ! rdeObject or password couldnt be found'));
         return null;
@@ -222,13 +253,13 @@ function decryptPassword(rdeObject, encryptedPassword) {
 
         const rdeObjectProperties = Object.getOwnPropertyNames(rdeObject);
 
-        const sections = Object.getOwnPropertyNames(rdeObject[rdeObjectProperties[0]])
-
         const encryptedPasswordSections = encryptedPassword.split('.');
 
         const complexity = parseInt(encryptedPasswordSections[0].match(/\d+/)[0]);
 
         encryptedPassword = encryptedPasswordSections[1];
+
+        const choosenSection = encryptedPasswordSections[2];
 
         for (let i = 0; i <= encryptedPassword.length ; i++) {
 
@@ -240,59 +271,55 @@ function decryptPassword(rdeObject, encryptedPassword) {
 
                 for (let j = 0; j < rdeObjectProperties.length; j++) {
                     
-                    for (let l = 0; l < sections.length; l++) {
+                    rdeObject[rdeObjectProperties[j]][choosenSection].find((item, index) => {
+                        if (extractedEncryption === item) {
 
-                        rdeObject[rdeObjectProperties[j]][sections[l]].find((item, index) => {
-                            if (extractedEncryption === item) {
+                            const decryptedChar = rdeObjectProperties[j].split('_')[1];
 
-                                const decryptedChar = rdeObjectProperties[j].split('_')[1];
-
-                                switch (decryptedChar) {
-                                    case 'questionMark':
-                                        decryptedPassword += '?';
-                                        break;
-                                    case 'exclamationMark':
-                                        decryptedPassword += '!';
-                                        break;
-                                    case 'atSign':
-                                        decryptedPassword += '@';
-                                        break;
-                                    case 'dollarSign':
-                                        decryptedPassword += '$';
-                                        break;
-                                    case 'percentSign':
-                                        decryptedPassword += '%';
-                                        break;
-                                    case 'numberSign':
-                                        decryptedPassword += '#';
-                                        break;
-                                    case 'ampersand':
-                                        decryptedPassword += '&';
-                                        break;
-                                    case 'multiplicationSign':
-                                        decryptedPassword += '*';
-                                        break;
-                                    case 'divisionSign':
-                                        decryptedPassword += '/';
-                                        break;
-                                    case 'plusSign':
-                                        decryptedPassword += '+';
-                                        break;
-                                    case 'minus':
-                                        decryptedPassword += '-';
-                                        break;
-                                    case 'underscore':
-                                        decryptedPassword += '_';
-                                        break;
-                                    default:
-                                        decryptedPassword += decryptedChar;
-                                        break;
-                                }
-                                
+                            switch (decryptedChar) {
+                                case 'questionMark':
+                                    decryptedPassword += '?';
+                                    break;
+                                case 'exclamationMark':
+                                    decryptedPassword += '!';
+                                    break;
+                                case 'atSign':
+                                    decryptedPassword += '@';
+                                    break;
+                                case 'dollarSign':
+                                    decryptedPassword += '$';
+                                    break;
+                                case 'percentSign':
+                                    decryptedPassword += '%';
+                                    break;
+                                case 'numberSign':
+                                    decryptedPassword += '#';
+                                    break;
+                                case 'ampersand':
+                                    decryptedPassword += '&';
+                                    break;
+                                case 'multiplicationSign':
+                                    decryptedPassword += '*';
+                                    break;
+                                case 'divisionSign':
+                                    decryptedPassword += '/';
+                                    break;
+                                case 'plusSign':
+                                    decryptedPassword += '+';
+                                    break;
+                                case 'minus':
+                                    decryptedPassword += '-';
+                                    break;
+                                case 'underscore':
+                                    decryptedPassword += '_';
+                                    break;
+                                default:
+                                    decryptedPassword += decryptedChar;
+                                    break;
                             }
-                        });
-
-                    }
+                            
+                        }
+                    });
 
                 }
 
