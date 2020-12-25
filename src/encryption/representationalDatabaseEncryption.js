@@ -235,7 +235,7 @@ function encryptPassword(rdeObject, password) {
             }
         }
     
-        return `rde${complexity}.${encryptedPassword}.${choosenSection}`; 
+        return `rde${complexity}.${encryptedPassword}`; 
     } else {
         console.error(chalk.red(' ! rdeObject or password couldnt be found'));
         return null;
@@ -253,13 +253,15 @@ function decryptPassword(rdeObject, encryptedPassword) {
 
         const rdeObjectProperties = Object.getOwnPropertyNames(rdeObject);
 
+        const sectionProperties = Object.getOwnPropertyNames(rdeObject[rdeObjectProperties[0]]);
+
         const encryptedPasswordSections = encryptedPassword.split('.');
 
         const complexity = parseInt(encryptedPasswordSections[0].match(/\d+/)[0]);
 
         encryptedPassword = encryptedPasswordSections[1];
 
-        const choosenSection = encryptedPasswordSections[2];
+        // const choosenSection = encryptedPasswordSections[2]; removed
 
         for (let i = 0; i <= encryptedPassword.length ; i++) {
 
@@ -270,57 +272,60 @@ function decryptPassword(rdeObject, encryptedPassword) {
                 const extractedEncryption = encryptedPassword.substr(i, complexity);
 
                 for (let j = 0; j < rdeObjectProperties.length; j++) {
-                    
-                    rdeObject[rdeObjectProperties[j]][choosenSection].find((item, index) => {
-                        if (extractedEncryption === item) {
 
-                            const decryptedChar = rdeObjectProperties[j].split('_')[1];
-
-                            switch (decryptedChar) {
-                                case 'questionMark':
-                                    decryptedPassword += '?';
-                                    break;
-                                case 'exclamationMark':
-                                    decryptedPassword += '!';
-                                    break;
-                                case 'atSign':
-                                    decryptedPassword += '@';
-                                    break;
-                                case 'dollarSign':
-                                    decryptedPassword += '$';
-                                    break;
-                                case 'percentSign':
-                                    decryptedPassword += '%';
-                                    break;
-                                case 'numberSign':
-                                    decryptedPassword += '#';
-                                    break;
-                                case 'ampersand':
-                                    decryptedPassword += '&';
-                                    break;
-                                case 'multiplicationSign':
-                                    decryptedPassword += '*';
-                                    break;
-                                case 'divisionSign':
-                                    decryptedPassword += '/';
-                                    break;
-                                case 'plusSign':
-                                    decryptedPassword += '+';
-                                    break;
-                                case 'minus':
-                                    decryptedPassword += '-';
-                                    break;
-                                case 'underscore':
-                                    decryptedPassword += '_';
-                                    break;
-                                default:
-                                    decryptedPassword += decryptedChar;
-                                    break;
+                    for (let k = 0; k < sectionProperties.length; k++) {
+                        
+                        rdeObject[rdeObjectProperties[j]][sectionProperties[k]].find((item, index) => {
+                            if (extractedEncryption === item) {
+    
+                                const decryptedChar = rdeObjectProperties[j].split('_')[1];
+    
+                                switch (decryptedChar) {
+                                    case 'questionMark':
+                                        decryptedPassword += '?';
+                                        break;
+                                    case 'exclamationMark':
+                                        decryptedPassword += '!';
+                                        break;
+                                    case 'atSign':
+                                        decryptedPassword += '@';
+                                        break;
+                                    case 'dollarSign':
+                                        decryptedPassword += '$';
+                                        break;
+                                    case 'percentSign':
+                                        decryptedPassword += '%';
+                                        break;
+                                    case 'numberSign':
+                                        decryptedPassword += '#';
+                                        break;
+                                    case 'ampersand':
+                                        decryptedPassword += '&';
+                                        break;
+                                    case 'multiplicationSign':
+                                        decryptedPassword += '*';
+                                        break;
+                                    case 'divisionSign':
+                                        decryptedPassword += '/'; 
+                                        break;
+                                    case 'plusSign':
+                                        decryptedPassword += '+';
+                                        break;
+                                    case 'minus':
+                                        decryptedPassword += '-';
+                                        break;
+                                    case 'underscore':
+                                        decryptedPassword += '_';
+                                        break;
+                                    default:
+                                        decryptedPassword += decryptedChar;
+                                        break;
+                                }
+                                
                             }
-                            
-                        }
-                    });
-
+                        });
+                    }
+                    
                 }
 
             }
