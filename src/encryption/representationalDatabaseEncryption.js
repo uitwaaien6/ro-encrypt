@@ -121,8 +121,6 @@ function createKey(complexity = 3) {
     return rdeObject;
 }
 
-
-
 function encrypt(password, rdeObject) {
 
     if (rdeObject && password) {
@@ -244,8 +242,6 @@ function encrypt(password, rdeObject) {
 
 }
 
-
-
 function decrypt(encryptedPassword, rdeObject) {
 
     if (rdeObject && encryptedPassword) {
@@ -320,7 +316,6 @@ function decrypt(encryptedPassword, rdeObject) {
                                     case 'underscore':
                                         decryptedPassword += '_';
                                         break;
-
                                     default:
                                         decryptedPassword += decryptedChar;
                                         break;
@@ -343,6 +338,5 @@ function decrypt(encryptedPassword, rdeObject) {
     }
 
 }
-
 
 module.exports = { createKey, encrypt, decrypt };
