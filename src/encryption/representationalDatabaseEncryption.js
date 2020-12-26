@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 
-function createRDEObject(complexity = 3) {
+function createKey(complexity = 3) {
 
     if (complexity <= 2) {
         for (let i = 0; i < letters.length; i++) {
@@ -24,7 +24,7 @@ function createRDEObject(complexity = 3) {
 
     const sectionNameEncryptionLetters = 'qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
 
-    const letters = 'chr_q,chr_w,chr_e,chr_r,chr_t,chr_y,chr_u,chr_i,chr_o,chr_p,chr_a,chr_s,chr_d,chr_f,chr_g,chr_h,chr_j,chr_k,chr_l,chr_z,chr_x,chr_c,chr_v,chr_b,chr_n,chr_m,chr_Q,chr_W,chr_E,chr_R,chr_T,chr_Y,chr_U,chr_I,chr_O,chr_P,chr_A,chr_S,chr_D,chr_F,chr_G,chr_H,chr_J,chr_K,chr_L,chr_Z,chr_X,chr_C,chr_V,chr_B,chr_N,chr_M,chr_1,chr_2,chr_3,chr_4,chr_5,chr_6,chr_7,chr_8,chr_9,chr_0,chr_questionMark,chr_exclamationMark,chr_atSign,chr_dollarSign,chr_percentSign,chr_numberSign,chr_ampersand,chr_multiplicationSign,chr_divisionSign,chr_plusSign,chr_minusSign,chr_underscore'.split(',');
+    const letters = 'chr_q,chr_w,chr_e,chr_r,chr_t,chr_y,chr_u,chr_i,chr_o,chr_p,chr_a,chr_s,chr_d,chr_f,chr_g,chr_h,chr_j,chr_k,chr_l,chr_z,chr_x,chr_c,chr_v,chr_b,chr_n,chr_m,chr_Q,chr_W,chr_E,chr_R,chr_T,chr_Y,chr_U,chr_I,chr_O,chr_P,chr_A,chr_S,chr_D,chr_F,chr_G,chr_H,chr_J,chr_K,chr_L,chr_Z,chr_X,chr_C,chr_V,chr_B,chr_N,chr_M,chr_1,chr_2,chr_3,chr_4,chr_5,chr_6,chr_7,chr_8,chr_9,chr_0,chr_questionMark,chr_exclamationMark,chr_atSign,chr_dollarSign,chr_percentSign,chr_numberSign,chr_ampersand,chr_multiplicationSign,chr_divisionSign,chr_plusSign,chr_minusSign,chr_underscore,chr_ ,'.split(',');
 
     let createdSections = [];
 
@@ -123,7 +123,7 @@ function createRDEObject(complexity = 3) {
 
 
 
-function encryptPassword(rdeObject, password) {
+function encrypt(password, rdeObject) {
 
     if (rdeObject && password) {
 
@@ -204,6 +204,7 @@ function encryptPassword(rdeObject, password) {
                         case '_':
                             encryptedPassword = encryptedPassword + rdeObject[`${rdeObjectPropertySymbol}_underscore`][choosenSection][Math.floor(Math.random() * rdeObject[`${rdeObjectPropertySymbol}_underscore`][choosenSection].length)];
                             break;
+
                         default:
                             break;
                     }
@@ -245,7 +246,7 @@ function encryptPassword(rdeObject, password) {
 
 
 
-function decryptPassword(rdeObject, encryptedPassword) {
+function decrypt(encryptedPassword, rdeObject) {
 
     if (rdeObject && encryptedPassword) {
 
@@ -279,6 +280,8 @@ function decryptPassword(rdeObject, encryptedPassword) {
                             if (extractedEncryption === item) {
     
                                 const decryptedChar = rdeObjectProperties[j].split('_')[1];
+
+
     
                                 switch (decryptedChar) {
                                     case 'questionMark':
@@ -317,6 +320,7 @@ function decryptPassword(rdeObject, encryptedPassword) {
                                     case 'underscore':
                                         decryptedPassword += '_';
                                         break;
+
                                     default:
                                         decryptedPassword += decryptedChar;
                                         break;
@@ -341,4 +345,4 @@ function decryptPassword(rdeObject, encryptedPassword) {
 }
 
 
-module.exports = { createRDEObject, encryptPassword, decryptPassword };
+module.exports = { createKey, encrypt, decrypt };
