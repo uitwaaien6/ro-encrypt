@@ -219,7 +219,6 @@ function decrypt(encryptedPassword, keyObject) {
             }
         }
 
-        
         //console.log(` ~ Decrypting password is done...`);
 
         return decryptedPassword;
