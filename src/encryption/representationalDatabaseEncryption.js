@@ -4,13 +4,19 @@ const chalk = require('chalk');
 
 function createKey(complexity = 3) {
 
-    //console.log(` ~ Initalizing KEY OBJECT...`);
+    console.log(` ~ Initalizing KEY OBJECT...`);
 
-    const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.split('');
+    const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
 
     const sectionNameEncryptionLetters = 'qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
 
-    const letters = 'qwertyuiopasdfghjklzxcvbnmğüşıöçQWERTYUIOPASDFGHJKLZXCVBNMĞÜŞÖÇ1234567890?!@$%#&*/+-_ ()[]{};:,.|^'.split('');
+    let letters = '';
+
+    for (let i = 0; i < 400; i++) {
+        letters += String.fromCharCode(i);
+    }
+
+    letters = letters.split('');
 
     let createdSections = [];
 
@@ -119,7 +125,7 @@ function createKey(complexity = 3) {
         }
     }
 
-    return keyObject;
+    return Object.freeze({ ...keyObject });
 }
 
 function encrypt(password, keyObject) {
@@ -230,3 +236,4 @@ function decrypt(encryptedPassword, keyObject) {
 }
 
 module.exports = { createKey, encrypt, decrypt };
+
