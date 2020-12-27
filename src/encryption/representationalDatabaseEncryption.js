@@ -132,6 +132,8 @@ function encrypt(password, keyObject) {
 
     if (keyObject && password) {
 
+        password = password.toString();
+
         //console.log(` ~ Encrypting password...`);
 
         const keyObjectProperties = Object.getOwnPropertyNames(keyObject);
