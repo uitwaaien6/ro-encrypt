@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 class RDE {
 
-    static createKey(password, complexity = 3) {
+    static createKey(password) {
 
         // console.log(` ~ Initalizing KEY OBJECT...`);
     
@@ -13,6 +13,8 @@ class RDE {
         const sectionNameEncryptionLetters = 'qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
     
         const letters = password.split('');
+
+        const complexity = 3;
     
         let createdSections = [];
     
@@ -149,8 +151,6 @@ class RDE {
             const randomSectionIndex = Math.floor(Math.random() * sections.length);
             const choosenSection = sections[randomSectionIndex]; // choosen section for this encryption
     
-            const complexity = keyObject[keyObjectProperties[0]][choosenSection][0].length;
-    
             let encryptedPassword = ''; 
         
             for (let i = 0; i < keyObjectProperties.length; i++) {
@@ -187,7 +187,7 @@ class RDE {
     
             //console.log(` ~ Encrypting password is done...`);
         
-            return `RDE${complexity}.${encryptedPassword}`; 
+            return `${encryptedPassword}`; 
         } else {
             console.error(chalk.red(' ! keyObject or password couldnt be found'));
             return null;
@@ -212,18 +212,16 @@ class RDE {
             }
     
             const sectionProperties = Object.getOwnPropertyNames(keyObject[keyObjectProperties[0]]);
-            const encryptedPasswordSections = encryptedPassword.split('.');
-            const complexity = parseInt(encryptedPasswordSections[0].match(/\d+/)[0]);
-            encryptedPassword = encryptedPasswordSections[1];
+
             // const choosenSection = encryptedPasswordSections[2]; removed
     
             for (let i = 0; i <= encryptedPassword.length ; i++) {
     
-                if (i % complexity === 0) {
+                if (i % 6 === 0) {
     
                     // extract the encryption from the encryptedPassword by seeking through with the coefficients of the complexity
     
-                    const extractedEncryption = encryptedPassword.substr(i, complexity);
+                    const extractedEncryption = encryptedPassword.substr(i, 6);
     
                     for (let j = 0; j < keyObjectProperties.length; j++) {
     
