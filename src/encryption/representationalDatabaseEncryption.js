@@ -3,9 +3,10 @@
 const chalk = require('chalk');
 
 class RDE {
+
     static createKey(password, complexity = 3) {
 
-        console.log(` ~ Initalizing KEY OBJECT...`);
+        // console.log(` ~ Initalizing KEY OBJECT...`);
     
         const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
     
@@ -122,12 +123,11 @@ class RDE {
 
         // shuffle the properties of the keyObject to prevent the sequences of UTF-16 code units values attacks
         // efffsane oldu lul
-        const keyObjectProperties = Object.getOwnPropertyNames(keyObject);
-        const shuffledProperties = keyObjectProperties.sort(() => Math.random() - 0.5);
+        const shuffledKeyObjectProperties = Object.getOwnPropertyNames(keyObject).sort(() => Math.random() - 0.5);
         const shuffledKeyObject = {};
 
         // bind the properties of the keyObject to shuffledKeyObject
-        shuffledProperties.forEach((item, index) => {
+        shuffledKeyObjectProperties.forEach((item, index) => {
             shuffledKeyObject[item] = keyObject[item];
         });
     
@@ -252,7 +252,4 @@ class RDE {
     }
 }
 
-
-
 module.exports = RDE;
-
