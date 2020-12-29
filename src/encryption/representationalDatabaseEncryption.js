@@ -225,7 +225,7 @@ class RDE {
     
             for (let i = 0; i <= encryptedPassword.length ; i++) {
     
-                if (i % 6 === 0) {
+                if (i % 6 === 0) { // the value 6 is static I think it is better that way if we hard code it.
     
                     // extract the encryption from the encryptedPassword by seeking through with the coefficients of the complexity
     
@@ -249,7 +249,7 @@ class RDE {
     
             //console.log(` ~ Decrypting password is done...`);
     
-            return decryptedPassword;
+            return `${decryptedPassword}`;
         } else {
             console.error(chalk.red(' ! keyObject or encrypted password is not provided in decrypt function'));
             console.error(chalk.red(' ! Returning null...'));
