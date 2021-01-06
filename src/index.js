@@ -4,8 +4,9 @@ require('dotenv').config();
 const RDE = require('./encryption/representationalDatabaseEncryption');
 
 const key = RDE.createKey(process.env.PASSWORD);
-const encryptedPassword = RDE.encrypt(process.env.PASSWORD, key);
-const decryptedPassword = RDE.decrypt(encryptedPassword, key);
 
-console.log(encryptedPassword);
-console.log(decryptedPassword);
+const encrypted = RDE.encrypt(process.env.PASSWORD, key);
+const decrypted = RDE.decrypt(encrypted, key);
+
+console.log(` ~ Encrypted: ${encrypted}`);
+console.log(` ~ Decrypted: ${decrypted}`);

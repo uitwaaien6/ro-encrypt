@@ -45,6 +45,7 @@ class RDE {
             }
         
             const sections = [...createdSections];
+            createdSections = undefined;
         
             const keyObject = {};
         
@@ -105,7 +106,7 @@ class RDE {
                                                 console.log(` ~ Array:`, keyObject[letters[m]][sections[0]], ` Index:`, chalk.yellow(sectionsIndex));
                                                 
                                                 encryption = '';
-                                                for (let l = 0; l < complexity; l++) {
+                                                for (let l = 0; l < complexity * 2; l++) {
                                                     const randomEncryptionLetter = Math.floor(Math.random() * encryptionLetters.length);
                                                     encryption = encryption + encryptionLetters[randomEncryptionLetter];
                                                 }
@@ -220,8 +221,6 @@ class RDE {
             }
     
             const sectionProperties = Object.getOwnPropertyNames(keyObject[keyObjectProperties[0]]);
-
-            // const choosenSection = encryptedPasswordSections[2]; removed
     
             for (let i = 0; i <= encryptedPassword.length ; i++) {
     
