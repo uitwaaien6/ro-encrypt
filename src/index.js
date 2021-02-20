@@ -1,12 +1,12 @@
 "use strict";
 
 require('dotenv').config();
-const RDE = require('./encryption/representationalDatabaseEncryption');
+const ROE = require('./encryption/ROEncrypt');
 
-const key = RDE.createKey(process.env.PASSWORD);
+const key = ROE.createKey(process.env.PASSWORD);
 
-const encrypted = RDE.encrypt(process.env.PASSWORD, key);
-const decrypted = RDE.decrypt(encrypted, key);
+const encrypted = ROE.encrypt(process.env.PASSWORD, key);
+const decrypted = ROE.decrypt(encrypted, key);
 
 console.log(key);
 console.log(` ~ Encrypted: ${encrypted}`);

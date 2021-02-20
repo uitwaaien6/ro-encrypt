@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 
-class RDE {
+class ROE {
 
     static createKey(password) {
 
@@ -10,7 +10,7 @@ class RDE {
 
         if (password) {
 
-            const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.split('');
+            const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
             const sectionNameEncryptionLetters = 'qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
             const letters = password.split('');
             const complexity = 3;
@@ -258,4 +258,4 @@ class RDE {
     }
 }
 
-module.exports = RDE;
+module.exports = ROE;
