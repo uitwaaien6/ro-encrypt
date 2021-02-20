@@ -10,7 +10,7 @@ class RDE {
 
         if (password) {
 
-            const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
+            const encryptionLetters = '12345678901234567890qwertyuiopasdfghjklzxcvbnm'.split('');
             const sectionNameEncryptionLetters = 'qwertyuiopasdfghjklzxcvbnm'.toUpperCase().split('');
             const letters = password.split('');
             const complexity = 3;
@@ -61,7 +61,7 @@ class RDE {
         
                 console.error(chalk.red(' ! Complexity argument of the createKey cannot be belov 2 or above 4'));
                 console.log(' ~ Creating an empty Key Object...');
-                console.log(chalk.yellow(' ! Recommended complexity number is 4 or above, default complexity number is set to 3'));
+                console.log(chalk.yellow(' ! Recommended complexity number is 4 or 3, default complexity number is set to 3'));
                 return null;
             }
         
