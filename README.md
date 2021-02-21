@@ -1,4 +1,4 @@
-# Representational-Database-Encryption
+# Representational-Object-Encryption
 
 # Getting Started
 1. install or clone the repository. \
